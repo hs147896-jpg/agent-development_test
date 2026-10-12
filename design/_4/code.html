@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>기록 관리, 엑셀 가져오기 및 백업/복원 - 프렙 // 카페 운영</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,700;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#e2e2e2",
+            "inverse-on-surface": "#313030",
+            "error-container": "#93000a",
+            "surface-card": "#1a1a1a",
+            "hairline-strong": "#262626",
+            "tertiary-container": "#ffdad4",
+            "secondary-fixed": "#d8e2ff",
+            "on-tertiary-container": "#c90f06",
+            "warning-gold": "#f4b400",
+            "m-red": "#e22718",
+            "surface-elevated": "#262626",
+            "on-tertiary-fixed": "#410000",
+            "canvas": "#000000",
+            "electric-blue": "#0653b6",
+            "outline-variant": "#444748",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#c6c6c7",
+            "on-surface-variant": "#c4c7c8",
+            "on-background": "#e5e2e1",
+            "tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb4a8",
+            "surface-bright": "#3a3939",
+            "on-error": "#690005",
+            "surface-soft": "#0d0d0d",
+            "on-primary-container": "#636565",
+            "secondary-fixed-dim": "#adc6ff",
+            "on-tertiary": "#680100",
+            "primary-fixed": "#e2e2e2",
+            "secondary-container": "#015fca",
+            "tertiary-fixed": "#ffdad4",
+            "carbon-gray": "#2b2b2b",
+            "on-tertiary-fixed-variant": "#930100",
+            "ink-muted": "#7e7e7e",
+            "inverse-primary": "#5d5f5f",
+            "error": "#ffb4ab",
+            "outline": "#8e9192",
+            "surface-dim": "#131313",
+            "ink-primary": "#ffffff",
+            "primary": "#ffffff",
+            "inverse-surface": "#e5e2e1",
+            "surface": "#131313",
+            "secondary": "#adc6ff",
+            "on-primary-fixed-variant": "#454747",
+            "m-blue-light": "#0066b1",
+            "surface-container-low": "#1c1b1b",
+            "surface-variant": "#353534",
+            "on-primary": "#2f3131",
+            "surface-container": "#201f1f",
+            "m-blue-dark": "#1c69d4",
+            "on-secondary": "#002e69",
+            "on-secondary-container": "#d4e0ff",
+            "on-surface": "#e5e2e1",
+            "on-secondary-fixed": "#001a41",
+            "success-green": "#0fa336",
+            "background": "#131313",
+            "hairline": "#3c3c3c",
+            "on-primary-fixed": "#1a1c1c",
+            "surface-container-highest": "#353534",
+            "surface-tint": "#c6c6c7",
+            "surface-container-high": "#2a2a2a",
+            "ink-body": "#bbbbbb",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary-fixed-variant": "#004494"
+          },
+          borderRadius: {
+            "DEFAULT": "0px",
+            "none": "0px",
+            "sm": "0px",
+            "md": "0px",
+            "lg": "0px",
+            "xl": "0px",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin": "2.5rem",
+            "gutter-mobile": "0.75rem",
+            "space-xxl": "4rem",
+            "space-xl": "2.5rem",
+            "space-section": "6rem",
+            "space-xs": "0.5rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-xxs": "0.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.75rem",
+            "space-lg": "1.5rem"
+          },
+          fontFamily: {
+            "display-xl": ["Hanken Grotesk"],
+            "display-lg-mobile": ["Hanken Grotesk"],
+            "label-uppercase": ["Hanken Grotesk"],
+            "label-button": ["Hanken Grotesk"],
+            "title-lg": ["Hanken Grotesk"],
+            "title-md": ["Hanken Grotesk"],
+            "body-sm": ["Hanken Grotesk"],
+            "display-lg": ["Hanken Grotesk"],
+            "display-md": ["Hanken Grotesk"],
+            "display-sm": ["Hanken Grotesk"],
+            "caption": ["Hanken Grotesk"],
+            "body-md": ["Hanken Grotesk"],
+            "display-xl-mobile": ["Hanken Grotesk"],
+            "title-sm": ["Hanken Grotesk"]
+          },
+          fontSize: {
+            "display-xl": ["80px", { lineHeight: "80px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "display-lg-mobile": ["36px", { lineHeight: "40px", letterSpacing: "0", fontWeight: "700" }],
+            "label-uppercase": ["14px", { lineHeight: "18px", letterSpacing: "0.1em", fontWeight: "700" }],
+            "label-button": ["14px", { lineHeight: "14px", letterSpacing: "0.1em", fontWeight: "700" }],
+            "title-lg": ["24px", { lineHeight: "32px", letterSpacing: "0", fontWeight: "700" }],
+            "title-md": ["20px", { lineHeight: "28px", letterSpacing: "0", fontWeight: "500" }],
+            "body-sm": ["14px", { lineHeight: "22px", letterSpacing: "0", fontWeight: "300" }],
+            "display-lg": ["56px", { lineHeight: "60px", letterSpacing: "-0.01em", fontWeight: "700" }],
+            "display-md": ["40px", { lineHeight: "44px", letterSpacing: "0", fontWeight: "700" }],
+            "display-sm": ["32px", { lineHeight: "38px", letterSpacing: "0", fontWeight: "700" }],
+            "caption": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "400" }],
+            "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "300" }],
+            "display-xl-mobile": ["48px", { lineHeight: "52px", letterSpacing: "-0.01em", fontWeight: "700" }],
+            "title-sm": ["18px", { lineHeight: "26px", letterSpacing: "0", fontWeight: "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Monospace telemetry data aesthetics */
+    .telemetry-num {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+    /* Custom mechanical scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3c3c3c;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-ink-primary font-body-md antialiased min-h-screen selection:bg-m-blue-dark selection:text-ink-primary overflow-x-hidden">
+<!-- M-Stripe Divider Signature -->
+<div class="w-full h-1 flex">
+<div class="h-full w-1/3 bg-m-blue-light"></div>
+<div class="h-full w-1/3 bg-m-blue-dark"></div>
+<div class="h-full w-1/3 bg-m-red"></div>
+</div>
+<!-- Shared Component: TopNavBar -->
+<header class="w-full border-b border-hairline dark:border-hairline bg-canvas dark:bg-canvas px-margin py-space-sm flex items-center justify-between">
+<!-- Brand Anchor -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 bg-m-blue-dark"></span>
+<span class="text-title-md font-title-md font-bold tracking-wider text-ink-primary dark:text-ink-primary">프렙 카페 운영</span>
+</div>
+<div class="h-4 w-[1px] bg-hairline hidden md:block"></div>
+<span class="hidden md:inline-block font-caption text-caption text-ink-muted uppercase">기록 엔진 V4.2</span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-ink-muted dark:text-ink-muted hover:text-ink-primary dark:hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">실적·손익</a>
+<a class="text-ink-muted dark:text-ink-muted hover:text-ink-primary dark:hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">메뉴 수익성</a>
+<a class="text-ink-muted dark:text-ink-muted hover:text-ink-primary dark:hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">재료·재고</a>
+<!-- Active Link strictly mapped to current page context -->
+<a class="text-ink-primary dark:text-ink-primary border-b-2 border-primary dark:border-primary pb-3 font-label-uppercase text-label-uppercase" href="#">기록·가져오기</a>
+</nav>
+<!-- Trailing Icon & Primary Actions -->
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 border border-hairline flex items-center justify-center text-ink-muted hover:bg-surface-elevated hover:text-ink-primary transition-none" title="동기화 상태">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+<button class="w-10 h-10 border border-hairline flex items-center justify-center text-ink-muted hover:bg-surface-elevated hover:text-ink-primary transition-none relative" title="알림">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="absolute top-2 right-2 w-1.5 h-1.5 bg-m-red"></span>
+</button>
+<button class="w-10 h-10 border border-hairline flex items-center justify-center text-ink-muted hover:bg-surface-elevated hover:text-ink-primary transition-none" title="설정">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+<button class="border border-white/80 text-ink-primary px-3 py-2 font-label-uppercase text-label-uppercase hover:bg-surface-elevated transition-none flex items-center gap-2" onclick="document.getElementById('backup-modal').classList.toggle('hidden')">
+<span class="material-symbols-outlined text-[16px]">save</span>
+        백업 / 복원
+      </button>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="max-w-[1440px] mx-auto px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- Header Cockpit & Status Bar -->
+<section class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md border-b border-hairline pb-space-md">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-caption text-caption text-m-blue-light uppercase tracking-widest">[ 통합 원장 코어 ]</span>
+<span class="text-hairline">/</span>
+<span class="font-caption text-caption text-ink-muted">기록 관리 및 대사</span>
+</div>
+<h1 class="font-display-sm text-display-sm text-ink-primary uppercase tracking-tight">기록 관리 센터</h1>
+<p class="font-body-sm text-body-sm text-ink-muted mt-1">
+          매장 POS 판매, 부대 비용 지출, 원부자재 재고 수불 내역을 원장 기준으로 무결성 검증 및 일원화 관리합니다.
+        </p>
+</div>
+<!-- Module Meta Readout -->
+<div class="flex items-center gap-4">
+<div class="border border-hairline bg-surface-soft px-4 py-2 flex items-center gap-3">
+<div class="w-2 h-2 bg-success-green animate-pulse"></div>
+<div>
+<div class="font-caption text-caption text-ink-muted">POS 동기화 엔진</div>
+<div class="font-label-uppercase text-label-uppercase text-ink-primary telemetry-num">정상 가동 // 정밀도 99.98%</div>
+</div>
+</div>
+<div class="border border-hairline bg-surface-soft px-4 py-2">
+<div class="font-caption text-caption text-ink-muted">총 누적 기록</div>
+<div class="font-label-uppercase text-label-uppercase text-ink-primary telemetry-num">28,491건</div>
+</div>
+</div>
+</section>
+<!-- Ledger Category Tabs (판매, 비용, 재고 변동 내역) -->
+<section class="flex border-b border-hairline-strong">
+<button class="bg-surface-card border-t border-l border-r border-hairline text-ink-primary font-label-uppercase text-label-uppercase px-6 py-3 flex items-center gap-2 border-b-2 border-b-m-blue-dark">
+<span class="material-symbols-outlined text-[18px]">point_of_sale</span>
+        판매 기록 원장
+        <span class="ml-2 px-1.5 py-0.5 bg-carbon-gray font-caption text-caption text-white telemetry-num">14,290</span>
+</button>
+<button class="bg-canvas border-transparent text-ink-muted hover:text-ink-primary font-label-uppercase text-label-uppercase px-6 py-3 flex items-center gap-2 transition-none">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+        비용 지출 내역
+        <span class="ml-2 px-1.5 py-0.5 bg-surface-soft text-ink-muted font-caption text-caption telemetry-num">412</span>
+</button>
+<button class="bg-canvas border-transparent text-ink-muted hover:text-ink-primary font-label-uppercase text-label-uppercase px-6 py-3 flex items-center gap-2 transition-none">
+<span class="material-symbols-outlined text-[18px]">inventory</span>
+        재고 수불 변동
+        <span class="ml-2 px-1.5 py-0.5 bg-surface-soft text-ink-muted font-caption text-caption telemetry-num">1,820</span>
+</button>
+</section>
+<!-- Operational Action Bar -->
+<section class="flex flex-wrap items-center justify-between gap-4 p-space-md bg-surface-card border border-hairline">
+<!-- Search & Filters -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center bg-surface-soft border border-hairline px-3 py-2 w-72">
+<span class="material-symbols-outlined text-ink-muted text-[18px] mr-2">search</span>
+<input class="bg-transparent border-0 p-0 text-body-sm text-ink-primary placeholder:text-ink-muted focus:ring-0 w-full outline-none" placeholder="메뉴명, 채널, 거래번호 검색..." type="text"/>
+</div>
+<div class="flex items-center gap-2 border border-hairline px-3 py-2 bg-surface-soft text-ink-muted font-label-uppercase text-label-uppercase">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="text-ink-primary">2026-09-01 ~ 2026-09-18</span>
+</div>
+<div class="flex items-center gap-2 border border-hairline px-3 py-2 bg-surface-soft text-ink-muted font-label-uppercase text-label-uppercase">
+<span>판매 채널:</span>
+<span class="text-ink-primary">전체 (홀 / 포장 / 배달)</span>
+</div>
+</div>
+<!-- Action Buttons Grid -->
+<div class="flex flex-wrap items-center gap-2">
+<!-- 판매 기록 수기 등록 -->
+<button class="border border-hairline hover:border-ink-primary text-ink-primary bg-surface-soft hover:bg-surface-elevated font-label-button text-label-button px-4 py-2.5 flex items-center gap-2 transition-none">
+<span class="material-symbols-outlined text-[18px]">add_box</span>
+          판매 기록 수기 등록
+        </button>
+<!-- 판매 엑셀 양식 다운로드 -->
+<button class="border border-hairline hover:border-ink-primary text-ink-primary bg-surface-soft hover:bg-surface-elevated font-label-button text-label-button px-4 py-2.5 flex items-center gap-2 transition-none">
+<span class="material-symbols-outlined text-[18px]">download</span>
+          판매 엑셀 양식 다운로드
+        </button>
+<!-- 엑셀 가져오기 (Trigger Modal) -->
+<button class="bg-m-blue-dark text-ink-primary font-label-button text-label-button px-4 py-2.5 flex items-center gap-2 hover:bg-m-blue-light transition-none" onclick="document.getElementById('import-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+          엑셀 가져오기
+        </button>
+<!-- 전체 데이터 백업/복원 -->
+<button class="border border-hairline text-ink-primary hover:border-m-red bg-surface-soft font-label-button text-label-button px-4 py-2.5 flex items-center gap-2 transition-none" onclick="document.getElementById('backup-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px] text-m-red">settings_backup_restore</span>
+          전체 데이터 백업/복원
+        </button>
+</div>
+</section>
+<!-- Master Sales Ledger Table -->
+<section class="border border-hairline bg-surface-card overflow-hidden">
+<div class="px-space-md py-3 bg-surface-soft border-b border-hairline flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-label-uppercase text-label-uppercase text-ink-primary">실시간 판매 원장 내역</span>
+<span class="text-caption text-caption text-ink-muted">최근 동기화: 2026-09-18 14:42:09</span>
+</div>
+<div class="flex items-center gap-2 text-caption text-caption text-ink-muted">
+<span>정렬: 최근 일자순</span>
+<span class="text-hairline">|</span>
+<span>100건 표시</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-soft border-b border-hairline text-ink-muted font-label-uppercase text-label-uppercase text-[12px]">
+<th class="py-3 px-4 w-12 text-center">#</th>
+<th class="py-3 px-4">일자</th>
+<th class="py-3 px-4">메뉴명 (식별코드)</th>
+<th class="py-3 px-4">판매채널</th>
+<th class="py-3 px-4 text-right">수량</th>
+<th class="py-3 px-4 text-right">판매액</th>
+<th class="py-3 px-4 text-right">원가</th>
+<th class="py-3 px-4 text-right">마진율</th>
+<th class="py-3 px-4 text-center">수정/삭제</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-hairline-strong font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-elevated/40 transition-none">
+<td class="py-3 px-4 text-center text-ink-muted telemetry-num">142</td>
+<td class="py-3 px-4 telemetry-num text-ink-primary">2026-09-18 14:12</td>
+<td class="py-3 px-4 font-medium text-ink-primary">
+                시그니처 바닐라 빈 라떼 (Ice)
+                <span class="block text-caption text-caption text-ink-muted font-mono">SKU-ES-004</span>
+</td>
+<td class="py-3 px-4">
+<span class="border border-hairline px-2 py-0.5 text-caption text-caption uppercase text-ink-primary bg-surface-soft">매장 (홀)</span>
+</td>
+<td class="py-3 px-4 text-right telemetry-num font-bold">2</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-primary">₩ 13,000</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-muted">₩ 3,180</td>
+<td class="py-3 px-4 text-right telemetry-num text-success-green font-bold">75.5%</td>
+<td class="py-3 px-4 text-center">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 hover:text-ink-primary text-ink-muted" title="수정"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+<button class="p-1 hover:text-m-red text-ink-muted" title="삭제"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-elevated/40 transition-none">
+<td class="py-3 px-4 text-center text-ink-muted telemetry-num">141</td>
+<td class="py-3 px-4 telemetry-num text-ink-primary">2026-09-18 14:05</td>
+<td class="py-3 px-4 font-medium text-ink-primary">
+                에티오피아 예가체프 싱글오리진 필터
+                <span class="block text-caption text-caption text-ink-muted font-mono">SKU-DRIP-001</span>
+</td>
+<td class="py-3 px-4">
+<span class="border border-hairline px-2 py-0.5 text-caption text-caption uppercase text-ink-primary bg-surface-soft">포장 (To-Go)</span>
+</td>
+<td class="py-3 px-4 text-right telemetry-num font-bold">1</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-primary">₩ 7,500</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-muted">₩ 1,950</td>
+<td class="py-3 px-4 text-right telemetry-num text-success-green font-bold">74.0%</td>
+<td class="py-3 px-4 text-center">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 hover:text-ink-primary text-ink-muted" title="수정"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+<button class="p-1 hover:text-m-red text-ink-muted" title="삭제"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-elevated/40 transition-none">
+<td class="py-3 px-4 text-center text-ink-muted telemetry-num">140</td>
+<td class="py-3 px-4 telemetry-num text-ink-primary">2026-09-18 13:58</td>
+<td class="py-3 px-4 font-medium text-ink-primary">
+                아메리카노 (Ice / 콰트로 블렌드)
+                <span class="block text-caption text-caption text-ink-muted font-mono">SKU-ES-001</span>
+</td>
+<td class="py-3 px-4">
+<span class="border border-m-blue-dark/50 text-secondary px-2 py-0.5 text-caption text-caption uppercase bg-surface-soft">배달의민족</span>
+</td>
+<td class="py-3 px-4 text-right telemetry-num font-bold">4</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-primary">₩ 20,000</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-muted">₩ 4,400</td>
+<td class="py-3 px-4 text-right telemetry-num text-success-green font-bold">78.0%</td>
+<td class="py-3 px-4 text-center">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 hover:text-ink-primary text-ink-muted" title="수정"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+<button class="p-1 hover:text-m-red text-ink-muted" title="삭제"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-elevated/40 transition-none">
+<td class="py-3 px-4 text-center text-ink-muted telemetry-num">139</td>
+<td class="py-3 px-4 telemetry-num text-ink-primary">2026-09-18 13:45</td>
+<td class="py-3 px-4 font-medium text-ink-primary">
+                버터 스콘 &amp; 수제 클로티드 크림
+                <span class="block text-caption text-caption text-ink-muted font-mono">SKU-BAKE-012</span>
+</td>
+<td class="py-3 px-4">
+<span class="border border-hairline px-2 py-0.5 text-caption text-caption uppercase text-ink-primary bg-surface-soft">매장 (홀)</span>
+</td>
+<td class="py-3 px-4 text-right telemetry-num font-bold">1</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-primary">₩ 5,200</td>
+<td class="py-3 px-4 text-right telemetry-num text-ink-muted">₩ 1,680</td>
+<td class="py-3 px-4 text-right telemetry-num text-success-green font-bold">67.7%</td>
+<td class="py-3 px-4 text-center">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 hover:text-ink-primary text-ink-muted" title="수정"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+<button class="p-1 hover:text-m-red text-ink-muted" title="삭제"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Bottom Telemetry Stats -->
+<div class="px-space-md py-3 bg-surface-soft border-t border-hairline flex flex-wrap items-center justify-between gap-4 text-caption text-caption text-ink-muted">
+<div class="flex items-center gap-6">
+<span>합계 수량: <strong class="text-ink-primary telemetry-num">8건</strong></span>
+<span>합계 매출액: <strong class="text-ink-primary telemetry-num">₩ 45,700</strong></span>
+<span>합계 원가: <strong class="text-ink-primary telemetry-num">₩ 11,210</strong></span>
+<span>평균 원가율: <strong class="text-success-green telemetry-num">24.5%</strong></span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2 py-1 border border-hairline bg-canvas hover:text-ink-primary text-ink-muted" disabled="">이전</button>
+<span class="px-2 text-ink-primary telemetry-num">1 / 143 페이지</span>
+<button class="px-2 py-1 border border-hairline bg-canvas hover:text-ink-primary text-ink-muted">다음</button>
+</div>
+</div>
+</section>
+<!-- Auxiliary Operational Dashboard: Quick Status & Telemetry Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- 1. 엑셀 양식 규격 안내 -->
+<div class="border border-hairline bg-surface-card p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted">엑셀 양식 규격 안내</span>
+<span class="text-caption text-caption text-m-blue-light font-mono">.XLSX 표준</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">
+            정격 엑셀 헤더 규격: [거래일시, 메뉴식별코드, 메뉴명, 채널코드, 결제단가, 판매수량, 할인액, 결제수단].
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-hairline flex items-center justify-between">
+<span class="text-caption text-caption text-ink-muted">최신 템플릿 버전: v2.4</span>
+<a class="font-label-button text-label-button text-ink-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">download</span> 양식 다시받기
+          </a>
+</div>
+</div>
+<!-- 2. 중복 처리 자동 보호 안내 -->
+<div class="border border-hairline bg-surface-card p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted">중복 처리 자동 보호 안내</span>
+<span class="text-caption text-caption text-warning-gold font-mono">중복 방지 활성화</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">
+            기존 기록과 중복되는 판매(동일 일자·메뉴·채널)는 자동으로 더하거나 덮어쓰지 않습니다. 수정은 기록 편집에서 진행하세요.
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-hairline flex items-center justify-between">
+<span class="text-caption text-caption text-ink-muted">중복 처리 방식: 자동 스킵</span>
+<span class="text-caption text-caption text-success-green">데이터 보호 가동 중</span>
+</div>
+</div>
+<!-- 3. 전체 시스템 백업 및 복원 안내 -->
+<div class="border border-hairline bg-surface-card p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted">전체 시스템 백업 및 복원 안내</span>
+<span class="text-caption text-caption text-m-red font-mono">스냅샷 대기 중</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">
+            복원 시 현재 매장 자료가 백업 파일로 전체 교체됩니다. 복원 전 현재 자료를 백업해 두세요.
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-hairline flex items-center justify-between">
+<span class="text-caption text-caption text-ink-muted">최근 자동 스냅샷: 오늘 06:00</span>
+<button class="font-label-button text-label-button text-m-red hover:underline" onclick="document.getElementById('backup-modal').classList.remove('hidden')">
+            백업 관리 열기
+          </button>
+</div>
+</div>
+</section>
+</main>
+<!-- ========================================================================= -->
+<!-- MODAL 1: 판매 기록 엑셀 가져오기 (Excel Import Validation Modal) - ACTIVE OVERLAY -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-[2px]" id="import-modal">
+<!-- Modal Window -->
+<div class="w-full max-w-4xl bg-surface-card border border-hairline shadow-2xl flex flex-col relative max-h-[942px] overflow-hidden">
+<!-- Modal Accent Stripe -->
+<div class="w-full h-1 flex">
+<div class="h-full w-1/3 bg-m-blue-light"></div>
+<div class="h-full w-1/3 bg-m-blue-dark"></div>
+<div class="h-full w-1/3 bg-m-red"></div>
+</div>
+<!-- Modal Header -->
+<div class="px-space-lg py-4 bg-surface-soft border-b border-hairline flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-m-blue-light text-[22px]">verified</span>
+<div>
+<h2 class="font-title-md text-title-md text-ink-primary font-bold">판매 기록 엑셀 파일 검증 및 가져오기</h2>
+<p class="font-caption text-caption text-ink-muted">2단계 // 데이터 파싱 및 무결성 검증</p>
+</div>
+</div>
+<button class="w-8 h-8 border border-hairline flex items-center justify-center text-ink-muted hover:text-ink-primary hover:bg-surface-elevated transition-none" onclick="document.getElementById('import-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Modal Body Content -->
+<div class="p-space-lg overflow-y-auto space-y-space-md">
+<!-- Critical Guidance Banner -->
+<div class="border-l-4 border-l-warning-gold bg-surface-soft p-3.5 border border-hairline flex items-start gap-3">
+<span class="material-symbols-outlined text-warning-gold text-[20px] shrink-0 mt-0.5">info</span>
+<div class="text-body-sm text-body-sm text-ink-body">
+<strong class="text-ink-primary font-medium">안내 및 중복 정책:</strong> 
+            기존 기록과 중복되는 판매(동일 일자·메뉴·채널)는 자동으로 더하거나 덮어쓰지 않습니다. 수정은 기록 편집에서 진행하세요.
+          </div>
+</div>
+<!-- File Upload Status Box -->
+<div class="border border-hairline bg-surface-soft p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-carbon-gray border border-hairline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-success-green text-[28px]">table_chart</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-sm text-title-sm text-ink-primary font-bold">prep_sales_20260918.xlsx</span>
+<span class="px-2 py-0.5 bg-success-green/20 text-success-green border border-success-green/40 font-caption text-caption font-bold">업로드 완료</span>
+</div>
+<div class="font-caption text-caption text-ink-muted mt-0.5">
+                크기: 342.8 KB  |  총 파싱 대상: 145 행  |  형식: Excel 통합 문서 (.xlsx)
+              </div>
+</div>
+</div>
+<button class="border border-hairline px-3 py-1.5 text-caption text-caption text-ink-muted hover:text-ink-primary hover:bg-surface-elevated self-start sm:self-center transition-none flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">swap_horiz</span> 파일 교체
+          </button>
+</div>
+<!-- Validation Summary Metric Strip (3개 검증 요약 상태 카드) -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<!-- 정상 행 -->
+<div class="border border-success-green/50 bg-surface-soft p-3 relative">
+<div class="flex items-center justify-between">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted text-[12px]">정상 행 (가져오기 가능)</span>
+<span class="material-symbols-outlined text-success-green text-[18px]">check_circle</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-display-sm text-display-sm text-success-green telemetry-num font-bold">142</span>
+<span class="font-body-sm text-body-sm text-ink-muted">건 (가져오기 가능)</span>
+</div>
+<div class="w-full bg-hairline-strong h-1 mt-2">
+<div class="bg-success-green h-1" style="width: 97.9%;"></div>
+</div>
+</div>
+<!-- 오류 행 -->
+<div class="border border-m-red/60 bg-surface-soft p-3 relative">
+<div class="flex items-center justify-between">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted text-[12px]">오류 행 (수정 필요)</span>
+<span class="material-symbols-outlined text-m-red text-[18px]">error</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-display-sm text-display-sm text-m-red telemetry-num font-bold">2</span>
+<span class="font-body-sm text-body-sm text-ink-muted">건 (필수 보정 필요)</span>
+</div>
+<div class="w-full bg-hairline-strong h-1 mt-2">
+<div class="bg-m-red h-1" style="width: 1.4%;"></div>
+</div>
+</div>
+<!-- 중복 감지 -->
+<div class="border border-warning-gold/50 bg-surface-soft p-3 relative">
+<div class="flex items-center justify-between">
+<span class="font-label-uppercase text-label-uppercase text-ink-muted text-[12px]">중복 감지 (중복 제외 처리)</span>
+<span class="material-symbols-outlined text-warning-gold text-[18px]">filter_list_off</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-display-sm text-display-sm text-warning-gold telemetry-num font-bold">1</span>
+<span class="font-body-sm text-body-sm text-ink-muted">건 (중복 제외 처리됨)</span>
+</div>
+<div class="w-full bg-hairline-strong h-1 mt-2">
+<div class="bg-warning-gold h-1" style="width: 0.7%;"></div>
+</div>
+</div>
+</div>
+<!-- 사전 유효성 검사 상세 로그 -->
+<div class="border border-hairline bg-canvas">
+<div class="px-4 py-2.5 bg-surface-soft border-b border-hairline flex items-center justify-between">
+<span class="font-label-uppercase text-label-uppercase text-ink-primary">사전 유효성 검사 상세 내역</span>
+<span class="font-caption text-caption text-ink-muted">검증 기준: 표준 헤더 규격 v2</span>
+</div>
+<div class="divide-y divide-hairline">
+<!-- Normal batch preview notification -->
+<div class="p-3 bg-surface-card flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="px-2 py-0.5 bg-success-green/20 text-success-green border border-success-green/40 text-[11px] font-bold">정상</span>
+<span class="text-body-sm text-body-sm text-ink-body">
+                  정상 데이터 <strong class="text-ink-primary font-semibold">142건</strong>: 스키마 규격 및 메뉴 식별 통과 (원장 저장 대기 중)
+                </span>
+</div>
+<span class="text-caption text-caption text-ink-muted telemetry-num">행 #1 ~ #14, #16 ~ #47, #49 ~ #81, #83 ~ #145</span>
+</div>
+<!-- Error 1 -->
+<div class="p-3 bg-surface-soft flex items-start justify-between gap-4 border-l-2 border-l-m-red">
+<div class="flex items-start gap-3">
+<span class="px-2 py-0.5 bg-m-red/20 text-m-red border border-m-red/50 text-[11px] font-bold mt-0.5">오류</span>
+<div>
+<div class="font-body-sm text-body-sm text-ink-primary font-medium">
+                    행 #15: 메뉴 ID 미식별 <code class="bg-carbon-gray px-1.5 py-0.2 text-m-red font-mono">[ UNKNOWN_LATTE ]</code>
+</div>
+<div class="font-caption text-caption text-ink-muted mt-0.5">
+                    사유: 사전 정의된 POS 메뉴 마스터 데이터베이스에서 일치하는 SKU를 찾을 수 없습니다. 원장 생성 불가
+                  </div>
+</div>
+</div>
+<span class="text-caption text-caption text-ink-muted shrink-0 telemetry-num">15행 / 가져오기 제외</span>
+</div>
+<!-- Error 2 -->
+<div class="p-3 bg-surface-soft flex items-start justify-between gap-4 border-l-2 border-l-m-red">
+<div class="flex items-start gap-3">
+<span class="px-2 py-0.5 bg-m-red/20 text-m-red border border-m-red/50 text-[11px] font-bold mt-0.5">오류</span>
+<div>
+<div class="font-body-sm text-body-sm text-ink-primary font-medium">
+                    행 #48: 판매수량 필수값 누락 (빈 셀 또는 누락)
+</div>
+<div class="font-caption text-caption text-ink-muted mt-0.5">
+                    사유: 판매 수량 필드가 비어 있거나 올바른 숫자 형식이 아닙니다. 기본값 자동 치환 방지 정책에 의해 기각
+                  </div>
+</div>
+</div>
+<span class="text-caption text-caption text-ink-muted shrink-0 telemetry-num">48행 / 가져오기 제외</span>
+</div>
+<!-- Duplicate Detection 1 -->
+<div class="p-3 bg-surface-soft flex items-start justify-between gap-4 border-l-2 border-l-warning-gold">
+<div class="flex items-start gap-3">
+<span class="px-2 py-0.5 bg-warning-gold/20 text-warning-gold border border-warning-gold/50 text-[11px] font-bold mt-0.5">중복</span>
+<div>
+<div class="font-body-sm text-body-sm text-ink-primary font-medium">
+                    행 #82: 2026-09-17 아이스 아메리카노 매장 판매 - 중복 제외 처리됨
+</div>
+<div class="font-caption text-caption text-ink-muted mt-0.5">
+                    사유: 원장 내 기존 판매 레코드와 타임스탬프 및 주문 항목 일치로 배제됨
+                  </div>
+</div>
+</div>
+<span class="text-caption text-caption text-ink-muted shrink-0 telemetry-num">82행 / 중복 건너뜀</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer Action Cluster -->
+<div class="px-space-lg py-4 bg-surface-soft border-t border-hairline flex flex-wrap items-center justify-between gap-3">
+<button class="border border-hairline text-ink-muted hover:text-ink-primary px-4 py-2.5 font-label-button text-label-button hover:bg-surface-elevated transition-none flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">download</span>
+          양식 다시받기
+        </button>
+<div class="flex items-center gap-3">
+<button class="border border-hairline text-ink-primary px-5 py-2.5 font-label-button text-label-button hover:bg-surface-elevated transition-none" onclick="document.getElementById('import-modal').classList.add('hidden')">
+            취소
+          </button>
+<!-- M-Blue Key Highlight Action Button -->
+<button class="bg-m-blue-dark text-ink-primary px-6 py-2.5 font-label-button text-label-button hover:bg-m-blue-light transition-none flex items-center gap-2 border border-transparent shadow-[0_0_15px_rgba(28,105,212,0.4)]" onclick="alert('정상 142건이 판매 기록에 성공적으로 반영되었습니다.'); document.getElementById('import-modal').classList.add('hidden');">
+<span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+            정상 142건만 가져오기
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- MODAL 2: 전체 데이터 백업 및 복원 안내 (Secondary Mini-Card / Modal Preview) -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-[2px] hidden" id="backup-modal">
+<div class="w-full max-w-xl bg-surface-card border border-hairline shadow-2xl flex flex-col relative overflow-hidden">
+<!-- M-Stripe Indicator -->
+<div class="w-full h-1 flex">
+<div class="h-full w-1/3 bg-m-blue-light"></div>
+<div class="h-full w-1/3 bg-m-blue-dark"></div>
+<div class="h-full w-1/3 bg-m-red"></div>
+</div>
+<!-- Header -->
+<div class="px-space-md py-3.5 bg-surface-soft border-b border-hairline flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-m-red text-[20px]">security_update_warning</span>
+<h3 class="font-title-md text-title-md text-ink-primary font-bold">전체 백업 및 복원 확인</h3>
+</div>
+<button class="w-8 h-8 border border-hairline flex items-center justify-center text-ink-muted hover:text-ink-primary" onclick="document.getElementById('backup-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Content -->
+<div class="p-space-lg space-y-space-md">
+<!-- Severe System Warning Callout -->
+<div class="border-2 border-m-red bg-m-red/10 p-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-m-red text-[24px] shrink-0">warning</span>
+<div>
+<div class="font-title-sm text-title-sm text-m-red font-bold">전체 교체 복원 경고</div>
+<p class="font-body-sm text-body-sm text-ink-primary mt-1 leading-relaxed">
+                복원 시 현재 매장 자료가 백업 파일로 전체 교체됩니다. 복원 전 현재 자료를 백업해 두세요.
+              </p>
+<div class="mt-2 text-caption text-caption text-ink-muted">
+                * 기존 판매 원장, 재고 변동표, 원가 계산식, POS 연동 내역이 대상 백업 시점 상태로 완전히 덮어씌워집니다.
+              </div>
+</div>
+</div>
+</div>
+<!-- Dual Action Cards for Operator Selection -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+<!-- Step 1: Backup Now -->
+<div class="border border-hairline bg-surface-soft p-3.5 flex flex-col justify-between">
+<div>
+<div class="font-label-uppercase text-label-uppercase text-ink-primary flex items-center gap-1.5 mb-1">
+<span class="material-symbols-outlined text-m-blue-light text-[18px]">archive</span>
+                현재 상태 전체 백업
+              </div>
+<p class="font-caption text-caption text-ink-muted">
+                현재 매장의 모든 활성 데이터베이스를 무결성 검증 암호화 파일(.prep_bak)로 로컬에 내려받습니다.
+              </p>
+</div>
+<button class="mt-4 w-full border border-hairline bg-canvas hover:bg-surface-elevated text-ink-primary py-2 font-label-button text-label-button flex items-center justify-center gap-1.5" onclick="alert('암호화 백업 아카이브 생성이 완료되었습니다.');">
+<span class="material-symbols-outlined text-[16px]">download</span> 지금 백업 파일 생성
+            </button>
+</div>
+<!-- Step 2: Restore from file -->
+<div class="border border-hairline bg-surface-soft p-3.5 flex flex-col justify-between">
+<div>
+<div class="font-label-uppercase text-label-uppercase text-ink-primary flex items-center gap-1.5 mb-1">
+<span class="material-symbols-outlined text-m-red text-[18px]">unarchive</span>
+                백업 파일로 복원
+              </div>
+<p class="font-caption text-caption text-ink-muted">
+                보관 중인 .prep_bak 파일을 지정하여 매장 상태를 과거 기준점으로 전체 복구(롤백)합니다.
+              </p>
+</div>
+<button class="mt-4 w-full border border-m-red/80 hover:bg-m-red text-ink-primary hover:text-white py-2 font-label-button text-label-button flex items-center justify-center gap-1.5" onclick="confirm('경고: 현재 데이터가 전량 삭제되고 백업본으로 교체됩니다. 계속하시겠습니까?');">
+<span class="material-symbols-outlined text-[16px]">history</span> 복원 파일 선택
+            </button>
+</div>
+</div>
+<div class="border border-hairline bg-canvas p-3 flex items-center justify-between text-caption text-caption text-ink-muted">
+<span>마지막 로컬 백업: 2026-09-17 23:59 (정상)</span>
+<span class="text-ink-primary font-mono">SHA-256 검증 완료</span>
+</div>
+</div>
+<!-- Footer -->
+<div class="px-space-md py-3 bg-surface-soft border-t border-hairline flex items-center justify-end">
+<button class="border border-hairline text-ink-primary px-5 py-2 font-label-button text-label-button hover:bg-surface-elevated" onclick="document.getElementById('backup-modal').classList.add('hidden')">
+          닫기
+        </button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PREP // CAFE OPS - 재료 예상 잔량 및 실사 관리</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#e2e2e2",
+            "inverse-on-surface": "#313030",
+            "error-container": "#93000a",
+            "surface-card": "#1a1a1a",
+            "hairline-strong": "#262626",
+            "tertiary-container": "#ffdad4",
+            "secondary-fixed": "#d8e2ff",
+            "on-tertiary-container": "#c90f06",
+            "warning-gold": "#f4b400",
+            "m-red": "#e22718",
+            "surface-elevated": "#262626",
+            "on-tertiary-fixed": "#410000",
+            "canvas": "#000000",
+            "electric-blue": "#0653b6",
+            "outline-variant": "#444748",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#c6c6c7",
+            "on-surface-variant": "#c4c7c8",
+            "on-background": "#e5e2e1",
+            "tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb4a8",
+            "surface-bright": "#3a3939",
+            "on-error": "#690005",
+            "surface-soft": "#0d0d0d",
+            "on-primary-container": "#636565",
+            "secondary-fixed-dim": "#adc6ff",
+            "on-tertiary": "#680100",
+            "primary-fixed": "#e2e2e2",
+            "secondary-container": "#015fca",
+            "tertiary-fixed": "#ffdad4",
+            "carbon-gray": "#2b2b2b",
+            "on-tertiary-fixed-variant": "#930100",
+            "ink-muted": "#7e7e7e",
+            "inverse-primary": "#5d5f5f",
+            "error": "#ffb4ab",
+            "outline": "#8e9192",
+            "surface-dim": "#131313",
+            "ink-primary": "#ffffff",
+            "primary": "#ffffff",
+            "inverse-surface": "#e5e2e1",
+            "surface": "#131313",
+            "secondary": "#adc6ff",
+            "on-primary-fixed-variant": "#454747",
+            "m-blue-light": "#0066b1",
+            "surface-container-low": "#1c1b1b",
+            "surface-variant": "#353534",
+            "on-primary": "#2f3131",
+            "surface-container": "#201f1f",
+            "m-blue-dark": "#1c69d4",
+            "on-secondary": "#002e69",
+            "on-secondary-container": "#d4e0ff",
+            "on-surface": "#e5e2e1",
+            "on-secondary-fixed": "#001a41",
+            "success-green": "#0fa336",
+            "background": "#131313",
+            "hairline": "#3c3c3c",
+            "on-primary-fixed": "#1a1c1c",
+            "surface-container-highest": "#353534",
+            "surface-tint": "#c6c6c7",
+            "surface-container-high": "#2a2a2a",
+            "ink-body": "#bbbbbb",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary-fixed-variant": "#004494"
+          },
+          "borderRadius": {
+            "DEFAULT": "0px",
+            "lg": "0px",
+            "xl": "0px",
+            "full": "0px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "gutter-mobile": "0.75rem",
+            "space-xxl": "4rem",
+            "space-xl": "2.5rem",
+            "space-section": "6rem",
+            "space-xs": "0.5rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-xxs": "0.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.75rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "display-xl": ["Hanken Grotesk"],
+            "display-lg-mobile": ["Hanken Grotesk"],
+            "label-uppercase": ["Hanken Grotesk"],
+            "label-button": ["Hanken Grotesk"],
+            "title-lg": ["Hanken Grotesk"],
+            "title-md": ["Hanken Grotesk"],
+            "body-sm": ["Hanken Grotesk"],
+            "display-lg": ["Hanken Grotesk"],
+            "display-md": ["Hanken Grotesk"],
+            "display-sm": ["Hanken Grotesk"],
+            "caption": ["Hanken Grotesk"],
+            "body-md": ["Hanken Grotesk"],
+            "display-xl-mobile": ["Hanken Grotesk"],
+            "title-sm": ["Hanken Grotesk"]
+          },
+          "fontSize": {
+            "display-xl": ["80px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["36px", { "lineHeight": "40px", "letterSpacing": "0", "fontWeight": "700" }],
+            "label-uppercase": ["14px", { "lineHeight": "18px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+            "label-button": ["14px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+            "title-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "0", "fontWeight": "700" }],
+            "title-md": ["20px", { "lineHeight": "28px", "letterSpacing": "0", "fontWeight": "500" }],
+            "body-sm": ["14px", { "lineHeight": "22px", "letterSpacing": "0", "fontWeight": "300" }],
+            "display-lg": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-md": ["40px", { "lineHeight": "44px", "letterSpacing": "0", "fontWeight": "700" }],
+            "display-sm": ["32px", { "lineHeight": "38px", "letterSpacing": "0", "fontWeight": "700" }],
+            "caption": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "300" }],
+            "display-xl-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "title-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "0", "fontWeight": "500" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    * {
+      border-radius: 0px !important;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Custom scrollbar for high-density telemetry table */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3c3c3c;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-ink-primary font-body-md min-h-screen flex flex-col antialiased selection:bg-m-blue-dark selection:text-white">
+<!-- TOP SIGNATURE M-STRIPE ACCENT DIVIDER -->
+<div class="w-full h-1 flex">
+<div class="h-full flex-1 bg-m-blue-light"></div>
+<div class="h-full flex-1 bg-m-blue-dark"></div>
+<div class="h-full flex-1 bg-m-red"></div>
+</div>
+<!-- SHARED COMPONENT: TopNavBar (Exact mapping from JSON specification) -->
+<header class="w-full border-b border-hairline bg-canvas px-margin py-space-sm flex items-center justify-between sticky top-0 z-40">
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 bg-m-blue-light inline-block"></span>
+<span class="text-title-md font-title-md font-bold tracking-wider text-ink-primary">프렙 카페 운영</span>
+</div>
+<!-- DESKTOP NAV CLUSTER -->
+<nav class="hidden md:flex items-center gap-space-lg ml-6 pt-3"><a class="text-ink-muted hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">실적·손익</a>
+<a class="text-ink-muted hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">메뉴 수익성</a>
+<a class="text-ink-primary border-b-2 border-primary pb-3 font-label-uppercase text-label-uppercase" href="#">재료·재고</a>
+<a class="text-ink-muted hover:text-ink-primary pb-3 font-label-uppercase text-label-uppercase transition-none" href="#">기록·가져오기</a></nav>
+</div>
+<!-- TRAILING ACTIONS -->
+<div class="flex items-center gap-space-sm">
+<div class="hidden sm:flex items-center gap-1 border border-hairline px-2 py-1 bg-surface-soft text-caption font-caption text-ink-muted"><span class="w-1.5 h-1.5 bg-success-green inline-block"></span><span>매장 포스: 메인 바 연결됨</span></div>
+<div class="flex items-center">
+<button class="w-10 h-10 border border-hairline text-ink-muted hover:text-ink-primary hover:bg-surface-elevated flex items-center justify-center transition-none" title="Sync">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+<button class="w-10 h-10 border-y border-r border-hairline text-ink-muted hover:text-ink-primary hover:bg-surface-elevated flex items-center justify-center transition-none" title="Notifications">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<button class="w-10 h-10 border-y border-r border-hairline text-ink-muted hover:text-ink-primary hover:bg-surface-elevated flex items-center justify-center transition-none" title="Settings">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+<button class="bg-primary text-canvas px-4 py-2 text-label-button font-label-button hover:bg-primary-container transition-none border border-primary flex items-center gap-1.5 ml-2">
+<span class="material-symbols-outlined text-[16px]">cloud_sync</span>
+<span>Backup / Restore</span>
+</button>
+</div>
+</header>
+<!-- MAIN TELEMETRY CONTENT CANVAS -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- PAGE TELEMETRY HEADER & OPERATIONAL SPEC -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md border-b border-hairline pb-space-md"><div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-caption font-caption text-m-blue-light uppercase tracking-widest font-bold">[재료 재고 관리]</span>
+<span class="text-caption font-caption text-ink-muted">실시간 재고 수불부 및 실사 연동</span>
+</div>
+<h1 class="text-title-lg font-title-lg text-ink-primary tracking-tight">
+프렙 카페 재료별 예상 잔량 및 실사 관리
+</h1>
+<p class="text-body-sm font-body-sm text-ink-muted mt-1">
+기준일: <span class="text-ink-primary font-bold">2026-09-18 (실영업 마감 기준)</span> • 레시피 판매분 자동 차감 및 입출고 원장 통합 트래킹
+</p>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs">
+<div class="bg-surface-soft border border-hairline px-3 py-2 flex items-center gap-2">
+<span class="text-caption font-caption text-ink-muted">창고 구분:</span>
+<span class="text-body-sm font-body-sm text-ink-primary font-medium">메인 바 (BAR-MAIN)</span>
+</div>
+<button class="bg-surface-card border border-hairline text-ink-primary px-3 py-2 text-label-button font-label-button hover:bg-surface-elevated flex items-center gap-1.5 transition-none">
+<span class="material-symbols-outlined text-[16px]">filter_alt</span>
+<span>필터: 전체 (11개 품목)</span>
+</button>
+<button class="bg-primary text-canvas px-4 py-2 text-label-button font-label-button hover:bg-primary-container flex items-center gap-1.5 transition-none" onclick="document.getElementById('auditModal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[16px]">fact_check</span>
+<span>전체 실사 즉시 등록</span>
+</button>
+</div></div>
+<!-- MANDATORY OPERATIONAL NOTICE & PRINCIPLE CALLOUT -->
+<section class="border border-hairline bg-surface-soft p-space-md flex flex-col gap-2"><div class="flex items-center gap-2 border-b border-hairline-strong pb-2">
+<span class="material-symbols-outlined text-warning-gold text-[18px]">verified_user</span>
+<span class="text-label-uppercase font-label-uppercase text-ink-primary tracking-wider font-bold">재고 관리 원칙 및 음수(-) 잔량 처리 안내</span>
+<span class="ml-auto text-caption font-caption text-ink-muted">정기 재고 감사 지침</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-1">
+<div class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 bg-m-blue-light mt-2 shrink-0"></span>
+<p class="text-body-sm font-body-sm text-ink-body">
+<span class="text-ink-primary font-medium">※ 실측수량(실사) 등록 시 이후 잔량의 새로운 기준점</span>으로 설정되며, 이전 수불 내역과 이중 합산되지 않고 안전하게 보정됩니다.
+</p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 bg-m-red mt-2 shrink-0"></span>
+<p class="text-body-sm font-body-sm text-ink-body">
+<span class="text-ink-primary font-medium">※ 소진(잔량 0)과 음수(-) 잔량은 명확히 구분</span>되며, 음수는 <span class="text-m-red font-bold underline decoration-m-red underline-offset-4">원장 기록 점검 필요</span> 상태(미등록 입고분 사용 또는 레시피 설정 오차)입니다.
+</p>
+</div>
+</div></section>
+<!-- 4-UP TELEMETRY METRIC OVERVIEW CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md"><!-- Card 1: 전체 관리 품목 -->
+<div class="bg-surface-card border border-hairline p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-uppercase font-label-uppercase text-ink-muted">전체 관리 품목</span>
+<span class="material-symbols-outlined text-ink-muted text-[18px]">inventory_2</span>
+</div>
+<div class="my-3">
+<div class="text-display-sm font-display-sm text-ink-primary tracking-tight">11<span class="text-title-sm font-title-sm text-ink-muted ml-1">개 품목</span></div>
+<div class="text-caption font-caption text-ink-muted mt-0.5">원두, 유제품, 포장 소모품 일체</div>
+</div>
+<div class="border-t border-hairline pt-2 flex items-center justify-between text-caption font-caption">
+<span class="text-ink-muted">규격 등록율</span>
+<span class="text-ink-primary font-bold">100.0%</span>
+</div>
+</div>
+<!-- Card 2: 정상 재고 -->
+<div class="bg-surface-card border border-hairline p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-uppercase font-label-uppercase text-ink-muted">정상 재고</span>
+<span class="w-2.5 h-2.5 bg-success-green"></span>
+</div>
+<div class="my-3">
+<div class="text-display-sm font-display-sm text-success-green tracking-tight">9<span class="text-title-sm font-title-sm text-ink-muted ml-1">개 품목</span></div>
+<div class="text-caption font-caption text-ink-muted mt-0.5">안전 재고 기준 충족 (양호)</div>
+</div>
+<div class="border-t border-hairline pt-2 flex items-center justify-between text-caption font-caption">
+<span class="text-ink-muted">정상 비율</span>
+<span class="text-success-green font-bold">81.8%</span>
+</div>
+</div>
+<!-- Card 3: 소진 (잔량 0) -->
+<div class="bg-surface-card border border-hairline p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-uppercase font-label-uppercase text-ink-muted">소진 (잔량 0)</span>
+<span class="text-warning-gold text-caption font-caption font-bold border border-warning-gold px-1.5 py-0.2">재고 0</span>
+</div>
+<div class="my-3">
+<div class="text-display-sm font-display-sm text-warning-gold tracking-tight">1<span class="text-title-sm font-title-sm text-ink-muted ml-1">개 품목</span></div>
+<div class="text-caption font-caption text-ink-muted mt-0.5">바닐라 시럽 <span class="text-warning-gold font-bold">0 ml</span> (소진 완료)</div>
+</div>
+<div class="border-t border-hairline pt-2 flex items-center justify-between text-caption font-caption">
+<span class="text-ink-muted">발주 상태</span>
+<span class="text-warning-gold font-bold">긴급 발주 필요</span>
+</div>
+</div>
+<!-- Card 4: 기록 점검 필요 (음수) -->
+<div class="bg-surface-card border border-m-red p-space-md flex flex-col justify-between relative">
+<div class="absolute top-0 right-0 w-2 h-2 bg-m-red"></div>
+<div class="flex items-center justify-between">
+<span class="text-label-uppercase font-label-uppercase text-m-red tracking-wider font-bold">기록 점검 필요 (음수)</span>
+<span class="bg-m-red text-white text-caption font-caption px-1.5 py-0.5 font-bold uppercase tracking-wider">주의</span>
+</div>
+<div class="my-3">
+<div class="text-display-sm font-display-sm text-m-red tracking-tight">1<span class="text-title-sm font-title-sm text-ink-muted ml-1">개 품목</span></div>
+<div class="text-caption font-caption text-m-red mt-0.5 font-medium">매일우유 <span class="font-bold">-1,200 ml</span> (초과 출고)</div>
+</div>
+<div class="border-t border-m-red/30 pt-2 flex items-center justify-between text-caption font-caption">
+<span class="text-ink-muted">요구 조치</span>
+<span class="text-m-red font-bold">원장 누락 및 입고 전표 검증</span>
+</div>
+</div></section>
+<!-- INVENTORY MASTER TELEMETRY TABLE SECTION -->
+<div class="bg-surface-card border border-hairline flex flex-col">
+<!-- Table Filter Toolbar -->
+<div class="p-space-sm border-b border-hairline bg-surface-soft flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-ink-muted text-[18px]">table_rows</span>
+<span class="text-label-uppercase font-label-uppercase text-ink-primary">재료별 수불 및 실사 원장 상세</span>
+<span class="text-caption font-caption text-ink-muted ml-2">(단위: 11 레코드)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-caption font-caption text-ink-muted">표시 필터:</span>
+<button class="bg-surface-elevated text-ink-primary border border-hairline text-caption font-caption px-2 py-1">전체</button>
+<button class="bg-canvas text-ink-muted border border-hairline text-caption font-caption px-2 py-1 hover:text-ink-primary">원두류</button>
+<button class="bg-canvas text-ink-muted border border-hairline text-caption font-caption px-2 py-1 hover:text-ink-primary">유제품</button>
+<button class="bg-canvas text-ink-muted border border-hairline text-caption font-caption px-2 py-1 hover:text-ink-primary">포장재</button>
+<button class="bg-canvas text-ink-muted border border-hairline text-caption font-caption px-2 py-1 hover:text-ink-primary">이상치(음수/0)</button>
+</div>
+</div>
+<!-- High-Density Grid Table Container -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[1240px]">
+<thead>
+<tr class="bg-surface-soft text-ink-muted border-b border-hairline h-11 text-label-uppercase font-label-uppercase text-[12px]"><th class="px-3 py-2 border-r border-hairline font-bold">재료코드</th>
+<th class="px-3 py-2 border-r border-hairline font-bold">재료명</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-center">단위</th>
+<th class="px-3 py-2 border-r border-hairline font-bold">공급처</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-right">초기재고</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-right">누적 입고</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-right">판매 차감<br/><span class="text-[10px] text-ink-muted font-normal">(레시피 기준)</span></th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-right">폐기량</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-center">최근 실사수량<br/><span class="text-[10px] text-ink-muted font-normal">(실사일자)</span></th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-right">현재 예상 잔량</th>
+<th class="px-3 py-2 border-r border-hairline font-bold text-center">상태</th>
+<th class="px-3 py-2 font-bold text-center min-w-[90px]">관리 액션</th></tr>
+</thead>
+<tbody class="divide-y divide-hairline-strong text-body-sm font-body-sm"><!-- ROW 1: 에스프레소 원두 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">ING-001</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>에스프레소 원두 (하우스 블렌드)</div>
+<div class="text-caption font-caption text-ink-muted">1,000g 질소충전팩</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">g</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 A (로스터리)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">20,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+10,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-15,500</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-300</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary font-bold">14,200</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+14,200 g
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-001', '에스프레소 원두 (하우스 블렌드)', '14,200', 'g')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 2: 매일우유 (음수) -->
+<tr class="hover:bg-m-red/10 transition-none bg-surface-soft border-l-4 border-l-m-red">
+<td class="px-3 py-2.5 font-mono text-m-red border-r border-hairline-strong font-bold">ING-002</td>
+<td class="px-3 py-2.5 font-bold text-m-red border-r border-hairline-strong">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span>매일우유 (신선냉장 1L)</span>
+</div>
+<div class="text-caption font-caption text-ink-muted">1,000ml 카톤팩</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">ml</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 B (데일리유업)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">24,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+12,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-37,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-200</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">2,500</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-15</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-m-red border-r border-hairline-strong bg-m-red/5">
+<span class="inline-block px-1 bg-m-red text-white font-bold mr-1 text-[11px]">오류</span>
+-1,200 ml
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-m-red bg-m-red text-white text-caption font-caption font-bold tracking-wider">점검필요 (음수)</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="bg-m-red text-white border border-m-red hover:bg-white hover:text-m-red px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-002', '매일우유 (신선냉장 1L)', '-1,200', 'ml')">
+원장 수정
+</button>
+</td>
+</tr>
+<!-- ROW 3: 오트밀크 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">ING-003</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>오트밀크 (바리스타 에디션)</div>
+<div class="text-caption font-caption text-ink-muted">1,000ml 테트라팩</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">ml</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 C (오트플랜트)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">6,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+6,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-7,500</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">4,500</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+4,500 ml
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-003', '오트밀크 (바리스타 에디션)', '4,500', 'ml')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 4: 바닐라 시럽 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">ING-004</td>
+<td class="px-3 py-2.5 font-medium text-warning-gold border-r border-hairline-strong">
+<div>바닐라 시럽 (프리미엄)</div>
+<div class="text-caption font-caption text-ink-muted">1,000ml 보틀</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">ml</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 D (모닌코리아)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">2,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-2,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-warning-gold">0</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-18 마감</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-warning-gold border-r border-hairline-strong">
+0 ml
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-warning-gold text-warning-gold text-caption font-caption font-bold">소진 (0)</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-warning-gold text-warning-gold hover:bg-warning-gold hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-004', '바닐라 시럽 (프리미엄)', '0', 'ml')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 5: 16oz 종이컵 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">PKG-001</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>테이크아웃 16oz 종이컵</div>
+<div class="text-caption font-caption text-ink-muted">크라프트 포장용 1,000개/박스</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">개</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 E (패키징팩)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">1,200</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-335</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-15</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">850</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+850 개
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('PKG-001', '테이크아웃 16oz 종이컵', '850', '개')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 6: 컵 뚜껑 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">PKG-002</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>16oz 범용 컵 뚜껑 (Lid)</div>
+<div class="text-caption font-caption text-ink-muted">PP 친환경 리드</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">개</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 E (패키징팩)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">1,300</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-370</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-10</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">920</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+920 개
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('PKG-002', '16oz 범용 컵 뚜껑 (Lid)', '920', '개')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 7: 컵홀더 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">PKG-003</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>에어홀더 슬리브</div>
+<div class="text-caption font-caption text-ink-muted">골판지 엠보싱</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">개</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 E (패키징팩)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">1,500</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-380</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">1,120</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+1,120 개
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('PKG-003', '에어홀더 슬리브', '1,120', '개')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 8: 빨대 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">PKG-004</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>생분해 PLA 개별포장 빨대</div>
+<div class="text-caption font-caption text-ink-muted">500개 번들팩</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">개</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 E (패키징팩)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">2,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">0</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-420</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-10</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">1,570</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+1,570 개
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('PKG-004', '생분해 PLA 개별포장 빨대', '1,570', '개')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 9: 원두 블렌드 B -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">ING-005</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>원두 블렌드 B (디카페인)</div>
+<div class="text-caption font-caption text-ink-muted">1,000g 질소충전팩</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">g</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 A (로스터리)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">8,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+5,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-6,200</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-100</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">6,700</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+6,700 g
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-005', '원두 블렌드 B (디카페인)', '6,700', 'g')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 10: 초콜릿 파우더 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">ING-006</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>다크 초콜릿 파우더 (코코아 72%)</div>
+<div class="text-caption font-caption text-ink-muted">1,000g 지퍼백</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">g</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 F (쇼콜라티에)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">4,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+2,000</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-2,800</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-50</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">3,150</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+3,150 g
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('ING-006', '다크 초콜릿 파우더', '3,150', 'g')">
+실사 등록
+</button>
+</td>
+</tr>
+<!-- ROW 11: 바스크 치즈케이크 -->
+<tr class="hover:bg-surface-elevated transition-none bg-canvas">
+<td class="px-3 py-2.5 font-mono text-ink-muted border-r border-hairline-strong">DST-001</td>
+<td class="px-3 py-2.5 font-medium text-ink-primary border-r border-hairline-strong">
+<div>바스크 치즈케이크 조각 (완제)</div>
+<div class="text-caption font-caption text-ink-muted">냉동 개별포장 10개/박스</div>
+</td>
+<td class="px-3 py-2.5 text-center text-ink-muted border-r border-hairline-strong">개</td>
+<td class="px-3 py-2.5 text-ink-body border-r border-hairline-strong">공급사 G (베이커리랩)</td>
+<td class="px-3 py-2.5 text-right font-mono border-r border-hairline-strong">30</td>
+<td class="px-3 py-2.5 text-right font-mono text-success-green border-r border-hairline-strong">+20</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-24</td>
+<td class="px-3 py-2.5 text-right font-mono text-ink-muted border-r border-hairline-strong">-2</td>
+<td class="px-3 py-2.5 text-center font-mono border-r border-hairline-strong">
+<span class="text-ink-primary">24</span>
+<span class="block text-[11px] text-ink-muted font-normal">2026-09-17</span>
+</td>
+<td class="px-3 py-2.5 text-right font-mono font-bold text-ink-primary border-r border-hairline-strong">
+24 개
+</td>
+<td class="px-3 py-2.5 text-center border-r border-hairline-strong">
+<span class="inline-block px-2 py-0.5 border border-success-green text-success-green text-caption font-caption font-bold">정상</span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="border border-hairline text-ink-primary hover:bg-white hover:text-black px-3 py-1 text-label-button font-label-button text-[12px] transition-none whitespace-nowrap" onclick="openAdjustModal('DST-001', '바스크 치즈케이크 조각', '24', '개')">
+실사 등록
+</button>
+</td>
+</tr></tbody>
+</table>
+</div>
+<!-- TABLE FOOTER AUDIT TIMESTAMP SUMMARY -->
+<div class="p-space-sm bg-surface-soft border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between text-caption font-caption text-ink-muted gap-2"><div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1">
+<span class="w-2 h-2 bg-m-blue-light"></span> 기준 시점: 포스 전표 마감 2026-09-18 23:59:59
+</span>
+<span class="hidden md:inline text-hairline">|</span>
+<span class="hidden md:inline">프렙 카페 운영 시스템 v4.8</span>
+</div>
+<div class="flex items-center gap-4">
+<span>다음 점검 주기: <strong>내일 08:30 (오픈 실사)</strong></span>
+<span class="text-ink-primary font-bold">전체 11개 품목 수불 검증 완료</span>
+</div></div>
+</div>
+<!-- LOWER BENTO SECTION: AUDIT RULES & SYSTEM DRIFT ANALYSIS -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md"><!-- Panel 1: 새 기준 잔량 산출 원칙 -->
+<div class="bg-surface-card border border-hairline p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2 text-m-blue-light">
+<span class="material-symbols-outlined text-[20px]">architecture</span>
+<span class="text-label-uppercase font-label-uppercase font-bold">새 기준 잔량 산출 원칙</span>
+</div>
+<p class="text-body-sm font-body-sm text-ink-body mb-3">
+실사 등록이 실행되는 즉시 이전 계산식은 보관 처리되며, <strong class="text-ink-primary">실측수량</strong>이 새로운 <strong class="text-ink-primary">기준 잔량</strong>으로 고정됩니다.
+</p>
+<div class="bg-canvas border border-hairline p-3 font-mono text-caption space-y-1">
+<div class="text-ink-muted">// 잔량 산출 공식</div>
+<div class="text-ink-primary font-bold">새 예상 잔량 = 확정 실측수량 + 이후 입출고 변동분</div>
+<div class="text-success-green">※ 실사 차이분은 별도 감사 원장에 기록되어 이중 가산되지 않습니다.</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-hairline text-caption font-caption text-ink-muted">
+실사 승인 권한: 매장 관리자 / 헤드 바리스타
+</div>
+</div>
+<!-- Panel 2: 음수 품목 긴급 원장 감사 절차 -->
+<div class="bg-surface-card border border-hairline p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2 text-m-red">
+<span class="material-symbols-outlined text-[20px]">troubleshoot</span>
+<span class="text-label-uppercase font-label-uppercase font-bold">음수(-) 품목 긴급 원장 감사 절차</span>
+</div>
+<p class="text-body-sm font-body-sm text-ink-body mb-3">
+<strong class="text-ink-primary">매일우유 (-1,200ml)</strong>와 같은 음수 잔량은 실제 재고보다 판매 차감이 더 많이 일어났음을 나타냅니다. 아래 3단계를 순서대로 확인하세요:
+</p>
+<ul class="space-y-1.5 text-body-sm font-body-sm text-ink-muted">
+<li class="flex items-start gap-2">
+<span class="text-m-red font-mono font-bold">01.</span>
+<span>당일 입고 거래명세서 미입력 건 존재 여부 확인</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-m-red font-mono font-bold">02.</span>
+<span>라떼 레시피 샷/밀크 용량 설정(ml) 포스 세팅 오차 조사</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-m-red font-mono font-bold">03.</span>
+<span>단일 멸균우유 대체 출고 시 품목 코드 혼선 여부 점검</span>
+</li>
+</ul>
+</div>
+<div class="mt-4 pt-2 border-t border-hairline flex items-center justify-between">
+<span class="text-caption font-caption text-ink-muted">확인 필요 품목: 1건</span>
+<button class="text-m-red text-label-button font-label-button text-[12px] hover:underline flex items-center gap-1 font-bold" onclick="openAdjustModal('ING-002', '매일우유 (신선냉장 1L)', '-1,200', 'ml')">
+<span>매일우유 원장 수정</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Panel 3: 블루투스 연동 전자저울 현황 -->
+<div class="bg-carbon-gray border border-hairline p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5 text-ink-primary">
+<span class="material-symbols-outlined text-electric-blue text-[20px]">scale</span>
+<span class="text-label-uppercase font-label-uppercase font-bold">블루투스 연동 전자저울</span>
+</div>
+<span class="text-caption font-caption text-success-green border border-success-green px-1.5 py-0.2">연결됨</span>
+</div>
+<div class="space-y-2 mt-3">
+<div class="bg-canvas border border-hairline p-2 flex items-center justify-between">
+<div>
+<div class="text-caption font-caption text-ink-muted">바 전자저울 #01 (에스프레소용)</div>
+<div class="font-mono text-ink-primary font-bold">ACAIA LUNAR-8820</div>
+</div>
+<div class="text-right">
+<div class="text-caption font-caption text-success-green">0.02g 오차범위</div>
+<div class="font-mono text-ink-primary">정상 연동</div>
+</div>
+</div>
+<div class="bg-canvas border border-hairline p-2 flex items-center justify-between">
+<div>
+<div class="text-caption font-caption text-ink-muted">원두 창고 대형 저울 #02</div>
+<div class="font-mono text-ink-primary font-bold">METTLER T-300K</div>
+</div>
+<div class="text-right">
+<div class="text-caption font-caption text-success-green">0.5g 오차범위</div>
+<div class="font-mono text-ink-primary">실사 대기 중</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-hairline flex items-center justify-between text-caption font-caption">
+<span class="text-ink-muted">영점 조절: 오늘 06:00</span>
+<span class="text-ink-primary font-mono font-bold">준비 완료</span>
+</div>
+</div></div>
+</main>
+<!-- MODAL: 실사 등록 및 잔량 보정 (STOCKTAKING & RECONCILIATION MODAL) -->
+<div class="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 hidden" id="auditModal">
+<div class="bg-surface-card border-2 border-hairline max-w-xl w-full flex flex-col">
+<!-- Modal Header with M-Stripe Indicator -->
+<div class="w-full h-1 flex">
+<div class="h-full flex-1 bg-m-blue-light"></div>
+<div class="h-full flex-1 bg-m-blue-dark"></div>
+<div class="h-full flex-1 bg-m-red"></div>
+</div>
+<div class="p-space-md border-b border-hairline flex items-center justify-between bg-surface-soft">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-ink-primary text-[20px]">fact_check</span>
+<h2 class="text-title-sm font-title-sm text-ink-primary font-bold">실사 등록 및 잔량 보정 (Stock Reconciliation)</h2>
+</div>
+<button class="w-8 h-8 border border-hairline text-ink-muted hover:text-ink-primary flex items-center justify-center" onclick="closeAdjustModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- Target Item Information Banner -->
+<div class="bg-canvas border border-hairline p-space-sm flex items-center justify-between">
+<div>
+<div class="text-caption font-caption text-ink-muted" id="modalItemCode">CODE: ING-002</div>
+<div class="text-title-sm font-title-sm font-bold text-ink-primary" id="modalItemName">매일우유 (신선냉장 1L)</div>
+</div>
+<div class="text-right">
+<div class="text-caption font-caption text-ink-muted">현재 전산 예상 잔량</div>
+<div class="font-mono text-title-sm font-bold text-m-red" id="modalCurrentQty">-1,200 ml</div>
+</div>
+</div>
+<!-- Strict Operational Policy Notice inside Modal -->
+<div class="border border-warning-gold/50 bg-surface-soft p-3 text-caption font-caption text-ink-body space-y-1">
+<div class="text-warning-gold font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span>중요: 실사 수량 기준점 전환 원칙</span>
+</div>
+<div>
+            1. 입력하신 <strong class="text-ink-primary">실측 수량</strong>은 확인 즉시 이 품목의 새로운 <strong>기준 잔량(Base Inventory)</strong>으로 대체됩니다.
+          </div>
+<div>
+            2. 계산 차이로 인한 증감분은 이중 합산되지 않고 <strong>‘2026-09-18 마감 실사차이’</strong> 전표로 독립 보존됩니다.
+          </div>
+</div>
+<!-- Form Fields -->
+<div class="flex flex-col gap-space-sm">
+<div>
+<label class="block text-label-uppercase font-label-uppercase text-ink-muted mb-1 text-[12px]">실측 수량 입력 (Actual Count)</label>
+<div class="flex items-center">
+<input class="flex-1 bg-canvas border border-hairline text-ink-primary px-3 py-2.5 font-mono text-title-sm focus:border-white focus:outline-none" id="modalInputQty" placeholder="실제 측정 수량을 입력하세요" type="number"/>
+<span class="bg-surface-elevated border border-l-0 border-hairline px-4 py-2.5 text-ink-muted font-mono" id="modalUnit">ml</span>
+</div>
+</div>
+<div>
+<label class="block text-label-uppercase font-label-uppercase text-ink-muted mb-1 text-[12px]">조정 사유 분류 (Audit Reason)</label>
+<select class="w-full bg-canvas border border-hairline text-ink-primary px-3 py-2 text-body-sm focus:border-white focus:outline-none">
+<option>입고 전표 누락에 따른 실측 보정</option>
+<option>영업 중 파손/폐기 미등록분 일괄 보정</option>
+<option>정기 마감 전수 실사 확정</option>
+<option>레시피 로스율 누적 차이 반영</option>
+</select>
+</div>
+<div>
+<label class="block text-label-uppercase font-label-uppercase text-ink-muted mb-1 text-[12px]">운영자 확인 메모</label>
+<input class="w-full bg-canvas border border-hairline text-ink-primary px-3 py-2 text-body-sm focus:border-white focus:outline-none" placeholder="예: 9/18 오전 매일우유 3박스 미입력 확인되어 실사 2,400ml로 보정" type="text"/>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-space-md border-t border-hairline bg-surface-soft flex items-center justify-end gap-space-sm">
+<button class="border border-hairline text-ink-muted hover:text-ink-primary px-4 py-2 text-label-button font-label-button transition-none" onclick="closeAdjustModal()">
+          취소
+        </button>
+<button class="bg-primary text-canvas px-5 py-2 text-label-button font-label-button hover:bg-primary-container transition-none flex items-center gap-1.5 font-bold" onclick="submitAuditAdjust()">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>새 기준 잔량으로 확정 반영</span>
+</button>
+</div>
+</div>
+</div>
+<!-- INLINE INTERACTION SCRIPT -->
+<script>
+    function openAdjustModal(code, name, current, unit) {
+      document.getElementById('modalItemCode').innerText = 'CODE: ' + code;
+      document.getElementById('modalItemName').innerText = name;
+      document.getElementById('modalCurrentQty').innerText = current + ' ' + unit;
+      document.getElementById('modalUnit').innerText = unit;
+      document.getElementById('modalInputQty').value = '';
+      document.getElementById('auditModal').classList.remove('hidden');
+    }
+
+    function closeAdjustModal() {
+      document.getElementById('auditModal').classList.add('hidden');
+    }
+
+    function submitAuditAdjust() {
+      const val = document.getElementById('modalInputQty').value;
+      if (!val) {
+        alert('실측 수량을 입력하십시오.');
+        return;
+      }
+      alert('확인되었습니다. 실측수량 [' + val + ']이(가) 이후 예상 잔량의 새 기준점으로 등록되었습니다. 실사 증감량은 별도 원장에 아카이빙되었습니다.');
+      closeAdjustModal();
+    }
+  </script>
+</body></html>

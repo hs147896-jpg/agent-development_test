@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.pnpm-store/
+.vercel/
+.env*
+!.env.example
+*.log
+.DS_Store
+prep-cafe-backup_*.json
